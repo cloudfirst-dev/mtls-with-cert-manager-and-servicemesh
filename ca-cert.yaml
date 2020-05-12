@@ -1,0 +1,17 @@
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: mtls-ca
+spec:
+  secretName: mtls-ca
+  commonName: example.com
+  isCA: true
+  keySize: 2048
+  usages:
+    - server auth
+    - client auth
+  issuerRef:
+    name: ca-issuer
+    # We can reference ClusterIssuers by changing the kind here.
+    # The default value is Issuer (i.e. a locally namespaced Issuer)
+    kind: Issuer

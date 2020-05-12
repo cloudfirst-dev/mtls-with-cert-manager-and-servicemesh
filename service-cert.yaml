@@ -1,0 +1,24 @@
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: testmtls-apps-example-com
+spec:
+  # Secret names are always required.
+  secretName: istio-ingressgateway-certs
+  # The use of the common name field has been deprecated since 2000 and is
+  # discouraged from being used.
+  commonName: testmtls.apps.example.com
+  usages:
+    - server auth
+  # At least one of a DNS Name, URI, or IP address is required.
+  dnsNames:
+  - testmtls.apps.example.com
+  # Issuer references are always required.
+  issuerRef:
+    name: mtls-issuer
+    # We can reference ClusterIssuers by changing the kind here.
+    # The default value is Issuer (i.e. a locally namespaced Issuer)
+    kind: Issuer
+    # This is optional since cert-manager will default to this value however
+    # if you are using an external issuer, change this to that issuer group.
+    group: cert-manager.io

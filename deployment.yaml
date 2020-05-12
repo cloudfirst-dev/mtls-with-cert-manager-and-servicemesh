@@ -1,0 +1,45 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: spring-boot-helloworld
+  namespace: mtls-test
+  labels:
+    app: spring-boot-helloworld
+spec:
+  ports:
+    - name: tcp-8080
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+  selector:
+    app: spring-boot-helloworld
+  type: ClusterIP
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  annotations:
+    openshift.io/generated-by: OpenShiftWebConsole
+  name: spring-boot-helloworld
+  labels:
+    app: spring-boot-helloworld
+spec:
+  selector:
+    matchLabels:
+      app: spring-boot-helloworld
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: spring-boot-helloworld
+      annotations:
+        sidecar.istio.io/inject: "true"
+    spec:
+      containers:
+        - name: spring-boot-helloworld
+          image: 'quay.io/cloudfirst/spring-boot-helloworld:latest'
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          imagePullPolicy: IfNotPresent

@@ -1,0 +1,4 @@
+gateway-cert.yaml
+client-ca.crt
+client-tls.crt
+client-tls.key
